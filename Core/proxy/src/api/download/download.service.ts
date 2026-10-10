@@ -65,7 +65,7 @@ export class DownloadService {
 
     res.status(upstream.status);
     const h = upstream.headers;
-    res.setHeader('Content-Type', h['content-type'] ?? 'application/octet-stream');
+    res.setHeader('Content-Type', String(h['content-type'] ?? 'application/octet-stream'));
     if (h['content-length']) res.setHeader('Content-Length', String(h['content-length']));
     if (h['content-range']) res.setHeader('Content-Range', String(h['content-range']));
     res.setHeader('Accept-Ranges', 'bytes');

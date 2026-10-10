@@ -2,8 +2,6 @@ import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import axios from 'axios';
 import { Request, Response } from 'express';
 
-const ALLOWED = ['archive.org'];
-
 @Injectable()
 export class DownloadService {
   async streamFile(fileUrl: string, req: Request, res: Response) {
@@ -11,10 +9,6 @@ export class DownloadService {
     try { target = new URL(fileUrl); } catch {
       throw new HttpException('Invalid URL', HttpStatus.BAD_REQUEST);
     }
-    if (!ALLOWED.some(h => target.hostname === h || target.hostname.endsWith('.' + h))) {
-      throw new HttpException('Host not allowed', HttpStatus.FORBIDDEN);
-    }
-
     console.log(req.method, req.originalUrl, 'range=', req.headers.range);
 
     const baseHeaders = { 'Accept-Encoding': 'identity' };
